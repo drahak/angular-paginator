@@ -1,0 +1,11 @@
+{
+	"name": "Paginator",
+	"version": "0.1.0",
+	"tags": ["paginator", "page", "angular", "drahak"],
+	"description": "Paginator component for AngularJS",
+	"devDependencies": {
+		"angularjs": "latest",
+		"angular-mocks": "latest",
+		"jasmine": "v2.0.0.rc5"
+	}
+}

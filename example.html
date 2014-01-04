@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html data-ng-app="drahak.paginator">
+	<head>
+		<title>Angular Paginator exmaple</title>
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+		<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+		<script type="text/javascript" src="angular-paginator.js"></script>
+		<script type="text/javascript" src="angular-paginator.template.js"></script>
+		<script>
+			angular.module('drahak.paginator').controller('Example', ['$scope', function($scope) {
+				$scope.page = 1;
+				$scope.perPage = 10;
+				$scope.totalCount = 450;
+
+				$scope.changePage = function(page) {
+					console.log('Page set to ' + page);
+				};
+			}]);
+		</script>
+	</head>
+	<body data-ng-controller="Example">
+		<paginator page="{{ page }}" per-page="{{ perPage }}" total-count="{{ totalCount }}" page-change="changePage($page)">
+
+		</paginator>
+	</body>
+</html>
