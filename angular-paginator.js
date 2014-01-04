@@ -2,7 +2,10 @@
 	'use strict';
 
 	var paginator = angular.module('drahak.paginator', []);
-	paginator.value('visiblePageRadius', 4);
+	paginator.value('paginatorOptions', {
+		visibleRadius: 4,
+		perPage: 15
+	});
 	paginator.factory('Paginator', function() {
 
 		/**
@@ -96,7 +99,7 @@
 		};
 	});
 
-	paginator.directive('paginator', ['$parse', 'Paginator', 'visiblePageRadius', function($parse, Paginator, visiblePageRadius) {
+	paginator.directive('paginator', ['$parse', 'Paginator', 'paginatorOptions', function($parse, Paginator, paginatorOptions) {
 		return {
 			scope: {
 				page: '@',
@@ -113,8 +116,8 @@
 				var reducePages = function(pages) {
 					var range = [];
 					var paginator = scope.paginator;
-					var top = Math.min(paginator.count(), paginator.page + visiblePageRadius);
-					var bottom = Math.max(1, paginator.page - visiblePageRadius);
+					var top = Math.min(paginator.count(), paginator.page + paginatorOptions.visibleRadius);
+					var bottom = Math.max(1, paginator.page - paginatorOptions.visibleRadius);
 					for (var i = bottom; i <= top; i++) range.push(i);
 					return range;
 				};
@@ -143,10 +146,10 @@
 
 				// Watch attributes for change
 				attrs.$observe('page', function(page) {
-					scope.paginator.page = parseInt(page);
+					scope.paginator.page = parseInt(page) || 1;
 				});
 				attrs.$observe('perPage', function(perPage) {
-					scope.paginator.perPage = parseInt(perPage);
+					scope.paginator.perPage = parseInt(perPage) || paginatorOptions.perPage;
 				});
 				attrs.$observe('totalCount', function(totalCount) {
 					scope.paginator.totalCount = parseInt(totalCount);
