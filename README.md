@@ -13,14 +13,14 @@ Paginator has two files: source and template so you can easily replace the templ
 
 Directive
 ---------
-Use `paginator` directive either as element or attribute. You can use attributes `page` (defaults to 1), `perPage` (defaults to 15) and `totalCount` (required) to set paginator values and `pageChange` event e.g. to load data on page change.
+Use `paginator` directive either as element or attribute. You can use attributes `page` (defaults to 1), `limit` (defaults to 15) and `total` (required) to set paginator values and `change` event e.g. to load data on page change.
 
 ```html
-<paginator page="{{ page }}" per-page="{{ perPage }}" total-count="{{ totalCount }}" page-change="changePage($page)">
+<paginator page="{{ page }}" limit="{{ perPage }}" total="{{ totalCount }}" change="changePage($page)">
 </paginator>
 ```
 
-you can use a few internal values in `pageChange` attribute:
+you can use a few internal values in `change` attribute:
 `$page` (Number) - current page number
 `$isFirst` (Boolean) - is current page the first page
 `$isLast` (Boolean) - is current page the last page

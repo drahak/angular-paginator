@@ -10,7 +10,7 @@
 			angular.module('drahak.paginator').controller('Example', ['$scope', function($scope) {
 				$scope.page = 1;
 				$scope.perPage = 10;
-				$scope.totalCount = 450;
+				$scope.total = 450;
 
 				$scope.changePage = function(page) {
 					console.log('Page set to ' + page);
@@ -19,8 +19,7 @@
 		</script>
 	</head>
 	<body data-ng-controller="Example">
-		<paginator per-page="{{ perPage }}" total-count="{{ totalCount }}" page-change="changePage($page)">
-
+		<paginator limit="{{ perPage }}" total="{{ total }}" change="changePage($page)">
 		</paginator>
 	</body>
 </html>

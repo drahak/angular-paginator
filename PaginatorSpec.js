@@ -1,6 +1,7 @@
 describe('Paginator service', function() {
 
 	var paginator;
+	var factory;
 	beforeEach(module('drahak.paginator'));
 	beforeEach(inject(function(Paginator) {
 		paginator = Paginator(1, 15, 86);
@@ -8,8 +9,8 @@ describe('Paginator service', function() {
 
 	it('has all data to render paginator', function() {
 		expect(paginator.page).toBe(1);
-		expect(paginator.perPage).toBe(15);
-		expect(paginator.totalCount).toBe(86);
+		expect(paginator.limit).toBe(15);
+		expect(paginator.total).toBe(86);
 	});
 
 	it('counts total number of pages', function() {

@@ -4,20 +4,20 @@
 	var paginator = angular.module('drahak.paginator', []);
 	paginator.value('paginatorOptions', {
 		visibleRadius: 4,
-		perPage: 15
+		limit: 15
 	});
 	paginator.factory('Paginator', function() {
 
 		/**
 		 * @param {Number} page
-		 * @param {Number} perPage
-		 * @param {Number} totalCount of items in paginator
+		 * @param {Number} limit of items per page
+		 * @param {Number} total count of items in paginator
 		 * @constructor
 		 */
-		var Paginator = function(page, perPage, totalCount) {
+		var Paginator = function(page, limit, total) {
 			this.page = page;
-			this.perPage = perPage;
-			this.totalCount = totalCount;
+			this.limit = limit;
+			this.total = total;
 		};
 
 		/**
@@ -25,7 +25,7 @@
 		 * @returns {Number}
 		 */
 		Paginator.prototype.count = function() {
-			return Math.ceil(this.totalCount / this.perPage);
+			return Math.ceil(this.total / this.limit);
 		};
 
 		/**
@@ -94,8 +94,8 @@
 			return pages;
 		};
 
-		return function(page, perPage, totalCount) {
-			return new Paginator(page, perPage, totalCount);
+		return function(page, limit, total) {
+			return new Paginator(page, limit, total);
 		};
 	});
 
@@ -103,15 +103,15 @@
 		return {
 			scope: {
 				page: '@',
-				perPage: '@',
-				totalCount: '@'
+				limit: '@',
+				total: '@'
 			},
 			restrict: 'AE',
 			templateUrl: 'drahak/paginator.html',
 			link: function(scope, element, attrs) {
-				var invoker = attrs.pageChange && $parse(attrs.pageChange);
+				var invoker = attrs.change && $parse(attrs.change);
 
-				scope.paginator = Paginator(scope.page, scope.perPage, scope.totalCount);
+				scope.paginator = Paginator(scope.page, scope.limit, scope.total);
 
 				var reducePages = function(pages) {
 					var range = [];
@@ -135,7 +135,7 @@
 					return page;
 				});
 
-				scope.$watch('paginator.totalCount', function() {
+				scope.$watch('paginator.total', function() {
 					var pages = scope.paginator.pages();
 					if (pages.length < 2) {
 						scope.steps = pages;
@@ -148,11 +148,11 @@
 				attrs.$observe('page', function(page) {
 					scope.paginator.page = parseInt(page) || 1;
 				});
-				attrs.$observe('perPage', function(perPage) {
-					scope.paginator.perPage = parseInt(perPage) || paginatorOptions.perPage;
+				attrs.$observe('limit', function(limit) {
+					scope.paginator.limit = parseInt(limit) || paginatorOptions.limit;
 				});
-				attrs.$observe('totalCount', function(totalCount) {
-					scope.paginator.totalCount = parseInt(totalCount);
+				attrs.$observe('total', function(total) {
+					scope.paginator.total = parseInt(total);
 				});
 			}
 		}
