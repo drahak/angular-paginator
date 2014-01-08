@@ -2,10 +2,9 @@
 	'use strict';
 
 	var paginator = angular.module('drahak.paginator', []);
-	paginator.value('paginatorOptions', {
-		visibleRadius: 4,
-		limit: 15
-	});
+	paginator.value('paginatorVisibleRadius', 4);
+	paginator.value('paginatorLimit', 15);
+
 	paginator.factory('Paginator', function() {
 
 		/**
@@ -99,63 +98,65 @@
 		};
 	});
 
-	paginator.directive('paginator', ['$parse', 'Paginator', 'paginatorOptions', function($parse, Paginator, paginatorOptions) {
-		return {
-			scope: {
-				page: '@',
-				limit: '@',
-				total: '@'
-			},
-			restrict: 'AE',
-			templateUrl: 'drahak/paginator.html',
-			link: function(scope, element, attrs) {
-				var invoker = attrs.change && $parse(attrs.change);
+	paginator.directive('paginator', ['$parse', 'Paginator', 'paginatorVisibleRadius', 'paginatorLimit',
+		function($parse, Paginator, paginatorVisibleRadius, paginatorLimit) {
 
-				scope.paginator = Paginator(scope.page, scope.limit, scope.total);
+			return {
+				scope: {
+					page: '@',
+					limit: '@',
+					total: '@'
+				},
+				restrict: 'AE',
+				templateUrl: 'drahak/paginator.html',
+				link: function(scope, element, attrs) {
+					var invoker = attrs.change && $parse(attrs.change);
 
-				var reducePages = function(pages) {
-					var range = [];
-					var paginator = scope.paginator;
-					var top = Math.min(paginator.count(), paginator.page + paginatorOptions.visibleRadius);
-					var bottom = Math.max(1, paginator.page - paginatorOptions.visibleRadius);
-					for (var i = bottom; i <= top; i++) range.push(i);
-					return range;
-				};
+					scope.paginator = Paginator(scope.page, scope.limit, scope.total);
 
-				scope.$watch('paginator.page', function(page) {
-					scope.steps = reducePages(scope.paginator.pages());
-					if (!invoker) return page;
+					var reducePages = function(pages) {
+						var range = [];
+						var paginator = scope.paginator;
+						var top = Math.min(paginator.count(), paginator.page + paginatorVisibleRadius);
+						var bottom = Math.max(1, paginator.page - paginatorVisibleRadius);
+						for (var i = bottom; i <= top; i++) range.push(i);
+						return range;
+					};
 
-					invoker(scope.$parent, {
-						$page: page,
-						$paginator: scope.paginator,
-						$isFirst: scope.paginator.isFirst(),
-						$isLast: scope.paginator.isLast()
+					scope.$watch('paginator.page', function(page) {
+						scope.steps = reducePages(scope.paginator.pages());
+						if (!invoker) return page;
+
+						invoker(scope.$parent, {
+							$page: page,
+							$paginator: scope.paginator,
+							$isFirst: scope.paginator.isFirst(),
+							$isLast: scope.paginator.isLast()
+						});
+						return page;
 					});
-					return page;
-				});
 
-				scope.$watch('paginator.total', function() {
-					var pages = scope.paginator.pages();
-					if (pages.length < 2) {
-						scope.steps = pages;
-					} else {
-						scope.steps = reducePages(pages);
-					}
-				});
+					scope.$watch('paginator.total', function() {
+						var pages = scope.paginator.pages();
+						if (pages.length < 2) {
+							scope.steps = pages;
+						} else {
+							scope.steps = reducePages(pages);
+						}
+					});
 
-				// Watch attributes for change
-				attrs.$observe('page', function(page) {
-					scope.paginator.page = parseInt(page) || 1;
-				});
-				attrs.$observe('limit', function(limit) {
-					scope.paginator.limit = parseInt(limit) || paginatorOptions.limit;
-				});
-				attrs.$observe('total', function(total) {
-					scope.paginator.total = parseInt(total);
-				});
+					// Watch attributes for change
+					attrs.$observe('page', function(page) {
+						scope.paginator.page = parseInt(page) || 1;
+					});
+					attrs.$observe('limit', function(limit) {
+						scope.paginator.limit = parseInt(limit) || paginatorLimit;
+					});
+					attrs.$observe('total', function(total) {
+						scope.paginator.total = parseInt(total);
+					});
+				}
 			}
-		}
-	}]);
+		}]);
 
 })();
