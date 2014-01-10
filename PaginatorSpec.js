@@ -1,7 +1,6 @@
 describe('Paginator service', function() {
 
 	var paginator;
-	var factory;
 	beforeEach(module('drahak.paginator'));
 	beforeEach(inject(function(Paginator) {
 		paginator = Paginator(1, 15, 86);
@@ -24,7 +23,7 @@ describe('Paginator service', function() {
 		expect(paginator.page).toBe(6);
 	});
 
-	it('moves paginator to first place', function() {
+	it('moves paginator to first page', function() {
 		var first = paginator.first();
 		expect(first).toBe(1);
 		expect(paginator.page).toBe(1);
