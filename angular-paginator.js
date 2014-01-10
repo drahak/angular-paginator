@@ -112,7 +112,11 @@
 				link: function(scope, element, attrs) {
 					var invoker = attrs.change && $parse(attrs.change);
 
-					scope.paginator = Paginator(scope.page, scope.limit, scope.total);
+					scope.paginator = Paginator(
+						parseInt(scope.page) || 1,
+						parseInt(scope.limit) || paginatorLimit,
+						parseInt(scope.total)
+					);
 
 					var reducePages = function(pages) {
 						var range = [];
