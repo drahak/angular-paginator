@@ -1,6 +1,6 @@
 {
-	"name": "Paginator",
-	"version": "0.1.0",
+	"name": "angular-pager",
+	"version": "0.2.2",
 	"tags": ["paginator", "page", "angular", "drahak"],
 	"description": "Paginator component for AngularJS",
 	"devDependencies": {
