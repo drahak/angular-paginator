@@ -1,5 +1,5 @@
-AngularJS paginator
-==================
+AngularJS paginator [![Build status](https://api.travis-ci.org/drahak/angular-paginator.png)](https://travis-ci.org/drahak/angular-paginator)
+===================
 
 Installation & setup
 --------------------
